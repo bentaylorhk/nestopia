@@ -24,10 +24,14 @@
 
 #include <cstring>
 #include <cstdlib>
+#include <fstream>
 #include "NstCpu.hpp"
+#include "NstLog.hpp"
 #include "NstHook.hpp"
 #include "NstState.hpp"
 #include "api/NstApiUser.hpp"
+
+#include "json.hpp"
 
 namespace Nes
 {
@@ -1816,12 +1820,29 @@ namespace Nes
 			pc = map.Peek16( FetchIRQISRVector() );
 		}
 
+                void Cpu::dumpToJson() {
+                  nlohmann::json json;
+                  json["pc"] = pc + 1; // One is added as it's an implicit call.
+                  json["a"] = a;
+                  json["x"] = x;
+                  json["y"] = y;
+                  json["p"] = flags.Pack();
+                  json["s"] = sp;
+                  json["ram"] = ram.mem;
+
+                  std::ofstream jsonOut("/home/ben/third-year-project/test/cpu-states/cpu.json");
+                  jsonOut << json << std::endl;
+                }
+
 		NST_NO_INLINE void Cpu::Jam()
 		{
 			// roll back and keep jamin'
 
 			pc = (pc - 1) & 0xFFFF;
 			cycles.count += cycles.clock[1];
+
+                        dumpToJson();
+                        exit(0);
 
 			if (!jammed)
 			{

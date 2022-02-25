@@ -95,6 +95,8 @@ namespace Nes
 
 		private:
 
+                        void dumpToJson();
+
 			static void NotifyOp(const char (&)[4],dword);
 
 			enum
