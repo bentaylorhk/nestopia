@@ -1830,7 +1830,7 @@ namespace Nes
                   json["s"] = sp;
                   json["ram"] = ram.mem;
 
-                  std::ofstream jsonOut("/home/ben/third-year-project/test/cpu-states/cpu.json");
+                  std::ofstream jsonOut("/home/ben/third-year-project/test/test-data/cpu-states/cpu.json");
                   jsonOut << json << std::endl;
                 }
 
